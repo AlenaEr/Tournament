@@ -1,5 +1,4 @@
-
-var scoringSystem = document.getElementById('scoringSystem').value;
+var scoringSystem = document.getElementById('scoringSystem');
 var participantsContainer = document.getElementById('participantsContainer');
 var judgesContainer = document.getElementById('judgesContainer');
 var resultsContainer = document.getElementById('resultsContainer');
@@ -28,9 +27,14 @@ function createFields(container, count, labelPrefix, inputNamePrefix, namesArray
     }
 }
 
+function validateGrade(grade) {
+    let maxGrade = parseInt(scoringSystem.value);
+    return !isNaN(grade) && grade >= 0 && grade <= maxGrade;
+}
+
 function createParticipantAndJudgesFields() {
-    let participantsCount = document.getElementById('participants').value;;
-    let judgesCount = document.getElementById('judgesCount').value;;
+    let participantsCount = document.getElementById('participants').value;
+    let judgesCount = document.getElementById('judgesCount').value;
 
     createFields(participantsContainer, participantsCount, 'Учасник ', 'participant', participantsNames);
     createFields(judgesContainer, judgesCount, 'Суддя ', 'judge', judgesNames);
@@ -44,7 +48,13 @@ function calculateRowTotal(row) {
         if (cell) {
             let input = cell.querySelector('input');
             if (input) {
-                total += parseFloat(input.value) || 0;
+                let grade = parseFloat(input.value) || 0;
+                if (!validateGrade(grade)) {
+                    alert('Invalid grade. Please enter a valid grade between 0 and ' + scoringSystem.value);
+                    input.value = '';
+                } else {
+                    total += grade;
+                }
             }
         }
     }
