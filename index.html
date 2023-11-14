@@ -2,44 +2,93 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament</title>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body>
+    <div class="wrapper">
+        <div class="header">
+            <h1 class="header__item">
+                Форма турніру
+            </h1>
+        </div>
+        <div class="main">
+            <div class="main__block">
+                <div class="main__item">
+                    <label for="participants">
+                        Кількість учасників:
+                    </label>
+                    <input type="number" class="main__input" id="participants" step="1" min="2" max="16"
+                        placeholder="макс. 16" />
+                </div>
+                <div class="main__item">
+                    <label for="participants">
+                        Кількість суддів:
+                    </label>
+                    <input type="number" class="main__input" id="judgesCount" step="1" min="1" max="6"
+                        placeholder="макс. 6" />
+                </div>
+                <div class="main__item">
+                    <label for="scoringSystem">
+                        Система оцінок:
+                    </label>
+                    <select class="main__select" id="scoringSystem" />
+                    <option value="5">
+                        5-бальна система
+                    </option>
+                    <option value="10">
+                        10-бальна система
+                    </option>
+                    <option value="100">
+                        100-бальна система
+                    </option>
+                    </select>
+                </div>
+                <div class="main__item">
+                    <button class="main__btn" onclick="createParticipantAndJudgesFields()">
+                        Вивести список учасників та
+                        жюрі
+                    </button>
+                </div>
+            </div>
+            <div class="main__block main__block--mod">
+                <div class="main__item" id="participantsContainer">
 
-  <h1>Форма турніру</h1>
+                </div>
+                <div class="main__item" id="judgesContainer">
 
-  <label for="participants">Кількість учасників:</label>
-  <input type="number" id="participants" min="1" required>
+                </div>
+            </div>
+            <div class="main__block main__block--add" id="btn_score">
+                <button class="main__btn" onclick="showResults()">
+                    Сформувати таблицю балів
+                </button>
+            </div>
+            <div class="main__block main__block--spec">
+                <div class="main__item main__item--mod" id="resultsContainer">
+                </div>
+            </div>
+            <div class="main__block main__block--spec">
+                <div class="main__item main__item--mod" id="winnersContainer">
+                </div>
+            </div>
+            <div class="main__block main__block--add" id="btn_result">
+                <button class="main__btn" onclick="showVotingResult()">
+                    Результат голосування
+                </button>
+            </div>
+        </div>
+        <div class="footer">
+            <!-- <p class="footer__item">
+                2023 by Team #3 (Eugene Yantowsky, Alena Eremina, Artem Zarudniy) - Design for Serg Nikiforov
+            </p> -->
+        </div>
 
-  <br>
-
-  <label for="judgesCount">Кількість судей:</label>
-  <input type="number" id="judgesCount" min="1" required>
-
-  <br>
-
-  <label for="scoringSystem">Система оцінок:</label>
-  <select id="scoringSystem" required>
-    <option value="5">5-бальна система</option>
-    <option value="10">10-бальна система</option>
-    <option value="100">100-бальна система</option>
-  </select>
-
-  <br>
-
-
-  <button onclick="createParticipantAndJudgesFields()">OK</button>
-
-
-  <div id="participantsContainer"></div>
-  <div id="judgesContainer"></div>
-  <button onclick="showResults()">Показати результати</button>
-  <div id="resultsContainer"></div>
-
-  <script src="main.js"></script>
+    </div>
+    <script src="./js/main.js"></script>
 </body>
 
 </html>
