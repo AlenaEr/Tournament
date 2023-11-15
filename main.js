@@ -158,7 +158,7 @@ function showVotingResult() {
         winnersContainer.appendChild(thirdPlaceItem);
     }
 
-    resultsContainer.innerHTML = '';
+    // resultsContainer.innerHTML = '';
 
     resultsContainer.appendChild(resultList);
 }
