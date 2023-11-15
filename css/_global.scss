@@ -6,6 +6,7 @@ body {
     background: url("../images/squared_paper_sheet.jpg") repeat;
     background-size: 60%;
     padding: 50px 2%;
+    font-weight: 700;
 }
 
 .wrapper {
@@ -15,7 +16,6 @@ body {
 
     .header {
         font-size: 5vw;
-        font-weight: 700;
     }
 
     .main {
@@ -23,7 +23,6 @@ body {
         text-align: center;
         margin-top: 40px;
         font-size: 2.5vw;
-        font-weight: 700;
 
         .main__input,
         .main__select,
@@ -44,7 +43,7 @@ body {
 
         .main__btn {
             margin: 20px 0 20px;
-            width: 30%;
+            width: 35%;
             font-size: 2vw;
             background-color: #FDF6E6;
             border: 2px solid #003399;
@@ -91,16 +90,41 @@ body {
             align-items: center;
 
             .main__item--mod {
-                border-top: 2px solid #003399;
                 padding-top: 25px;
+                border-top: 2px solid #003399;
+                
+                p {
+                    padding: 15px 0;
+                }
             }
-
+            
             .main__input {
                 width: 100%;
                 text-align: center;
                 border: 2px solid #003399;
                 font-size: 2.1vw;
             }
+        }
+        
+        .main__block {
+            ul {
+                padding: 15px 0;
+                
+                li {
+                    padding: 15px 0;
+                }
+            }
+        }
+    }
+    
+    .footer {
+        display: none;
+        margin-top: 25px;
+        font-size: 1.3vw;
+        
+        .footer__item {
+            padding: 15px 0;
+            border-top: 2px solid #003399;
         }
     }
 }

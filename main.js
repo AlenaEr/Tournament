@@ -20,7 +20,7 @@ function createFields(container, count, labelPrefix, inputNamePrefix, namesArray
         input.type = 'text';
 
         input.className = 'main__input'; //added Yantowsky
-        
+
         input.name = inputNamePrefix + i;
         input.addEventListener('input', function (event) {
             namesArray[i - 1] = event.target.value;
@@ -65,7 +65,7 @@ function calculateRowTotal(row) {
             }
         }
     }
-       resultMap.set(participantName, total);
+    resultMap.set(participantName, total);
 
     // Update the last cell in the row with the row sum
     row.cells[row.cells.length - 1].textContent = total;
@@ -80,7 +80,7 @@ function showResults() {
 
     let table = document.createElement('table');
     let headerRow = table.insertRow(0);
-    headerRow.insertCell(0).textContent = 'Учасник';
+    headerRow.insertCell(0).textContent = 'Учасник⮯ Суддя⮫';
     headerRow.insertCell(participantsCount.value).textContent = 'Сума балів';
 
     for (let i = 1; i <= judgesCount; i++) {
@@ -118,54 +118,49 @@ function showResults() {
 
 function showVotingResult() {
     let sortedResults = [...resultMap.entries()].sort((a, b) => b[1] - a[1]);
-
-    let resultList = document.createElement('ol');
-
+    
+    let winnersList = document.getElementById('winnersList'); //added Yantowsky
+    winnersList.innerHTML = ''; //added Yantowsky
+    
+    let winnersContainer = document.getElementById('winnersContainer');
+    winnersContainer.innerHTML = '';
+    
+    let resultList = document.createElement('ul');
+    
     let currentPlace = 1;
     let previousScore = null;
-
+    
     sortedResults.forEach((result, index) => {
         let listItem = document.createElement('li');
         
         if (previousScore === null || result[1] < previousScore) {
             currentPlace = index + 1;
         }
-
-        listItem.textContent = `${currentPlace} місце: ${result[0]}, Сума балів: ${result[1]}`;
+        
+        listItem.textContent = `${currentPlace} місце ➭ ${result[0]} ➭ ${result[1]} балів`;
         resultList.appendChild(listItem);
-
+        
         previousScore = result[1];
     });
-
-    let winnersContainer = document.getElementById('winnersContainer');
-    winnersContainer.innerHTML = '';
-
+    
     if (sortedResults.length > 0) {
         let winnerItem = document.createElement('p');
-        winnerItem.textContent = `Переможець: ${sortedResults[0][0]}`;
+        winnerItem.textContent = `🥇 Переможець: ${sortedResults[0][0]}`;
         winnersContainer.appendChild(winnerItem);
     }
-
+    
     if (sortedResults.length > 1) {
         let secondPlaceItem = document.createElement('p');
-        secondPlaceItem.textContent = `Друге місце: ${sortedResults[1][0]}`;
+        secondPlaceItem.textContent = `🥈 Друге місце: ${sortedResults[1][0]}`;
         winnersContainer.appendChild(secondPlaceItem);
     }
-
+    
     if (sortedResults.length > 2) {
         let thirdPlaceItem = document.createElement('p');
-        thirdPlaceItem.textContent = `Третє місце: ${sortedResults[2][0]}`;
+        thirdPlaceItem.textContent = `🥉 Третє місце: ${sortedResults[2][0]}`;
         winnersContainer.appendChild(thirdPlaceItem);
     }
-
-    // resultsContainer.innerHTML = '';
-
-    resultsContainer.appendChild(resultList);
+    
+    winnersList.appendChild(resultList); //added Yantowsky
+    document.getElementById("byTeam").style.display = "block"; //added Yantowsky
 }
-
-
-
-
-
-
-
