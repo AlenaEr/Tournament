@@ -4,10 +4,9 @@ var judgesContainer = document.getElementById('judgesContainer');
 var resultsContainer = document.getElementById('resultsContainer');
 var winnersContainer = document.getElementById('winnersContainer');
 
-
 var participantsNames = [];
 var judgesNames = [];
-var resultMap = new Map();
+var participantsData = [];
 
 function createFields(container, count, labelPrefix, inputNamePrefix, namesArray) {
     container.innerHTML = '';
@@ -19,8 +18,7 @@ function createFields(container, count, labelPrefix, inputNamePrefix, namesArray
         let input = document.createElement('input');
         input.type = 'text';
 
-        input.className = 'main__input'; //added Yantowsky
-
+        input.className = 'main__input';//added Yantowsky
         input.name = inputNamePrefix + i;
         input.addEventListener('input', function (event) {
             namesArray[i - 1] = event.target.value;
@@ -44,12 +42,14 @@ function createParticipantAndJudgesFields() {
     createFields(participantsContainer, participantsCount, 'Учасник ', 'participant', participantsNames);
     createFields(judgesContainer, judgesCount, 'Суддя ', 'judge', judgesNames);
 
-    document.getElementById("btn_score").style.display = "block"; //added Yantowsky
+    document.getElementById("btn_score").style.display = "block";//added Yantowsky
 }
 
 function calculateRowTotal(row) {
     let total = 0;
     let participantName = row.cells[0].textContent;
+    let participant = participantsData.find(p => p.name === participantName);
+
     for (let i = 1; i < row.cells.length - 1; i++) {
         let cell = row.cells[i];
         if (cell) {
@@ -65,7 +65,12 @@ function calculateRowTotal(row) {
             }
         }
     }
-    resultMap.set(participantName, total);
+
+    if (participant) {
+        participant.score = total;
+    } else {
+        participantsData.push({ name: participantName, score: total });
+    }
 
     // Update the last cell in the row with the row sum
     row.cells[row.cells.length - 1].textContent = total;
@@ -80,7 +85,7 @@ function showResults() {
 
     let table = document.createElement('table');
     let headerRow = table.insertRow(0);
-    headerRow.insertCell(0).textContent = 'Учасник⮯ Суддя⮫';
+    headerRow.insertCell(0).textContent = 'Учасник';
     headerRow.insertCell(participantsCount.value).textContent = 'Сума балів';
 
     for (let i = 1; i <= judgesCount; i++) {
@@ -96,8 +101,8 @@ function showResults() {
             let input = document.createElement('input');
             input.type = 'number';
 
-            input.className = 'main__input'; //added Yantowsky
-            input.placeholder = `макс. ${scoringSystem.value}`; //added Yantowsky
+            input.className = 'main__input';
+            input.placeholder = `макс. ${scoringSystem.value}`;//added Yantowsky
 
             input.name = 'judge' + j + 'participant' + i;
             input.addEventListener('input', function () {
@@ -113,54 +118,56 @@ function showResults() {
 
     resultsContainer.appendChild(table);
 
-    document.getElementById("btn_result").style.display = "block"; //added Yantowsky
+    document.getElementById("btn_result").style.display = "block";//added Yantowsky
 }
 
 function showVotingResult() {
-    let sortedResults = [...resultMap.entries()].sort((a, b) => b[1] - a[1]);
-    
-    let winnersList = document.getElementById('winnersList'); //added Yantowsky
-    winnersList.innerHTML = ''; //added Yantowsky
-    
+    let sortedResults = participantsData.slice().sort((a, b) => b.score - a.score);
+
+    let winnersList = document.getElementById('winnersList');
+    winnersList.innerHTML = '';
+
     let winnersContainer = document.getElementById('winnersContainer');
     winnersContainer.innerHTML = '';
-    
+
     let resultList = document.createElement('ul');
-    
+
     let currentPlace = 1;
     let previousScore = null;
-    
-    sortedResults.forEach((result, index) => {
+
+    sortedResults.forEach((result, index, array) => {
         let listItem = document.createElement('li');
-        
-        if (previousScore === null || result[1] < previousScore) {
-            currentPlace = index + 1;
+
+        if (previousScore !== null && result.score < previousScore) {
+            currentPlace++;
         }
-        
-        listItem.textContent = `${currentPlace} місце ➭ ${result[0]} ➭ ${result[1]} балів`;
+
+        listItem.textContent = `${currentPlace} місце ➭ ${result.name} ➭ ${result.score} балів`;
         resultList.appendChild(listItem);
-        
-        previousScore = result[1];
+
+        previousScore = result.score;
     });
-    
+
+    winnersList.appendChild(resultList);
+
     if (sortedResults.length > 0) {
         let winnerItem = document.createElement('p');
-        winnerItem.textContent = `🥇 Переможець: ${sortedResults[0][0]}`;
+        winnerItem.textContent = `🥇 Переможець: ${sortedResults[0].name} ➭ ${sortedResults[0].score} балів`;
         winnersContainer.appendChild(winnerItem);
     }
-    
+
     if (sortedResults.length > 1) {
         let secondPlaceItem = document.createElement('p');
-        secondPlaceItem.textContent = `🥈 Друге місце: ${sortedResults[1][0]}`;
+        secondPlaceItem.textContent = `🥈 Друге місце: ${sortedResults[1].name} ➭ ${sortedResults[1].score} балів`;
         winnersContainer.appendChild(secondPlaceItem);
     }
-    
+
     if (sortedResults.length > 2) {
         let thirdPlaceItem = document.createElement('p');
-        thirdPlaceItem.textContent = `🥉 Третє місце: ${sortedResults[2][0]}`;
+        thirdPlaceItem.textContent = `🥉 Третє місце: ${sortedResults[2].name} ➭ ${sortedResults[2].score} балів`;
         winnersContainer.appendChild(thirdPlaceItem);
     }
-    
-    winnersList.appendChild(resultList); //added Yantowsky
-    document.getElementById("byTeam").style.display = "block"; //added Yantowsky
+
+    document.getElementById("byTeam").style.display = "block";//added Yantowsky
 }
+
