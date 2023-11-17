@@ -45,10 +45,10 @@ function createParticipantAndJudgesFields() {
     document.getElementById("btn_score").style.display = "block";//added Yantowsky
 }
 
-function calculateRowTotal(row) {
+function calculateRowTotal(row, rowIndex) {
     let total = 0;
     let participantName = row.cells[0].textContent;
-    let participant = participantsData.find(p => p.name === participantName);
+    let participant = participantsData.findIndex(p => p.name === participantName && p.rowIndex === rowIndex);
 
     for (let i = 1; i < row.cells.length - 1; i++) {
         let cell = row.cells[i];
@@ -66,12 +66,9 @@ function calculateRowTotal(row) {
         }
     }
 
-    if (participant) {
-        participant.score = total;
-    } else {
-        participantsData.push({ name: participantName, score: total });
-    }
-
+    (participant !== -1) ? participantsData[participant].score = total
+    : participantsData.push({ name: participantName, score: total, rowIndex: rowIndex });
+    
     // Update the last cell in the row with the row sum
     row.cells[row.cells.length - 1].textContent = total;
     return total;
@@ -106,14 +103,14 @@ function showResults() {
 
             input.name = 'judge' + j + 'participant' + i;
             input.addEventListener('input', function () {
-                calculateRowTotal(row);
+                calculateRowTotal(row, i);
             });
             cell.appendChild(input);
         }
 
         // Add an additional cell for the row sum
         let totalCell = row.insertCell(-1);
-        totalCell.textContent = calculateRowTotal(row);
+        totalCell.textContent = calculateRowTotal(row, i);
     }
 
     resultsContainer.appendChild(table);
@@ -123,24 +120,25 @@ function showResults() {
 
 function showVotingResult() {
     let sortedResults = participantsData.slice().sort((a, b) => b.score - a.score);
-
     let winnersList = document.getElementById('winnersList');
     winnersList.innerHTML = '';
-
     let winnersContainer = document.getElementById('winnersContainer');
     winnersContainer.innerHTML = '';
-
     let resultList = document.createElement('ul');
-
     let currentPlace = 1;
     let previousScore = null;
+    let currentPlaceResults = [];
 
-    sortedResults.forEach((result, index, array) => {
+    sortedResults.forEach((result) => {
         let listItem = document.createElement('li');
 
         if (previousScore !== null && result.score < previousScore) {
+            appendPlaceResults(currentPlaceResults, currentPlace);
+            currentPlaceResults = [];
             currentPlace++;
         }
+
+        currentPlaceResults.push({ name: result.name, score: result.score });
 
         listItem.textContent = `${currentPlace} місце ➭ ${result.name} ➭ ${result.score} балів`;
         resultList.appendChild(listItem);
@@ -148,26 +146,32 @@ function showVotingResult() {
         previousScore = result.score;
     });
 
+    appendPlaceResults(currentPlaceResults, currentPlace);
+
     winnersList.appendChild(resultList);
-
-    if (sortedResults.length > 0) {
-        let winnerItem = document.createElement('p');
-        winnerItem.textContent = `🥇 Переможець: ${sortedResults[0].name} ➭ ${sortedResults[0].score} балів`;
-        winnersContainer.appendChild(winnerItem);
-    }
-
-    if (sortedResults.length > 1) {
-        let secondPlaceItem = document.createElement('p');
-        secondPlaceItem.textContent = `🥈 Друге місце: ${sortedResults[1].name} ➭ ${sortedResults[1].score} балів`;
-        winnersContainer.appendChild(secondPlaceItem);
-    }
-
-    if (sortedResults.length > 2) {
-        let thirdPlaceItem = document.createElement('p');
-        thirdPlaceItem.textContent = `🥉 Третє місце: ${sortedResults[2].name} ➭ ${sortedResults[2].score} балів`;
-        winnersContainer.appendChild(thirdPlaceItem);
-    }
-
-    document.getElementById("byTeam").style.display = "block";//added Yantowsky
+    document.getElementById("byTeam").style.display = "block"; // added Yantowsky
 }
 
+function appendPlaceResults(results, place) {
+    if (results.length > 0 && place <= 3) {
+        let placeText = getPlaceText(place);
+        let placeItem = document.createElement('p');
+        let names = results.map(result => result.name).join(', ');
+        placeItem.textContent = `${placeText} ${names} ➭ ${results[0].score} балів`;
+        winnersContainer.appendChild(placeItem);
+    }
+}
+
+
+function getPlaceText(place) {
+    switch (place) {
+        case 1:
+            return "🥇 Переможець:";
+        case 2:
+            return "🥈 Друге місце:";
+        case 3:
+            return "🥉 Третє місце:";
+        default:
+            return `${place}-е місце:`;
+    }
+}
