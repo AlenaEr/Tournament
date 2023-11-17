@@ -43,6 +43,12 @@ function createParticipantAndJudgesFields() {
     createFields(judgesContainer, judgesCount, 'Суддя ', 'judge', judgesNames);
 
     document.getElementById("btn_score").style.display = "block";//added Yantowsky
+    document.getElementById("resultsContainer").style.display = "none"; // added Yantowsky
+    document.getElementById("btn_result").style.display = "none";//added Yantowsky
+    // document.getElementById("winnerList").style.display = "none";//added Yantowsky
+    document.getElementById("winnersContainer").style.display = "none";//added Yantowsky
+    document.getElementById("winnersList").style.display = "none";//added Yantowsky
+    document.getElementById("byTeam").style.display = "none";//added Yantowsky
 }
 
 function calculateRowTotal(row, rowIndex) {
@@ -67,8 +73,8 @@ function calculateRowTotal(row, rowIndex) {
     }
 
     (participant !== -1) ? participantsData[participant].score = total
-    : participantsData.push({ name: participantName, score: total, rowIndex: rowIndex });
-    
+        : participantsData.push({ name: participantName, score: total, rowIndex: rowIndex });
+
     // Update the last cell in the row with the row sum
     row.cells[row.cells.length - 1].textContent = total;
     return total;
@@ -115,7 +121,11 @@ function showResults() {
 
     resultsContainer.appendChild(table);
 
+    document.getElementById("resultsContainer").style.display = "block";
     document.getElementById("btn_result").style.display = "block";//added Yantowsky
+    document.getElementById("winnersList").style.display = "none";//added Yantowsky
+    document.getElementById("winnersContainer").style.display = "none";//added Yantowsky
+    document.getElementById("byTeam").style.display = "none"; // added Yantowsky
 }
 
 function showVotingResult() {
@@ -149,6 +159,9 @@ function showVotingResult() {
     appendPlaceResults(currentPlaceResults, currentPlace);
 
     winnersList.appendChild(resultList);
+
+    document.getElementById("winnersList").style.display = "block";//added Yantowsky
+    document.getElementById("winnersContainer").style.display = "block";//added Yantowsky
     document.getElementById("byTeam").style.display = "block"; // added Yantowsky
 }
 
@@ -161,7 +174,6 @@ function appendPlaceResults(results, place) {
         winnersContainer.appendChild(placeItem);
     }
 }
-
 
 function getPlaceText(place) {
     switch (place) {
