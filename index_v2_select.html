@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tournament</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <h1 class="header__item">
+                Форма турніру
+            </h1>
+        </div>
+        <div class="main">
+            <div class="main__block">
+                <div class="main__item">
+                    <label for="participants">
+                        Кількість учасників:
+                    </label>
+                    <input type="number" class="main__input" id="participants" step="1" min="2" max="16"
+                        placeholder="макс. 16" />
+                </div>
+                <div class="main__item">
+                    <label for="participants">
+                        Кількість суддів:
+                    </label>
+                    <input type="number" class="main__input" id="judgesCount" step="1" min="1" max="6"
+                        placeholder="макс. 6" />
+                </div>
+                <div class="main__item">
+                    <label for="scoringSystem">
+                        Система оцінок:
+                    </label>
+                    <input type="text" class="main__input" id="scoringSystem" placeholder="1,2,3..." />
+                </div>
+                <div class="main__item">
+                    <button class="main__btn" onclick="createParticipantAndJudgesFields()">
+                        Вивести список учасників та
+                        жюрі
+                    </button>
+                </div>
+            </div>
+            <div class="main__block main__block--mod">
+                <div class="main__item" id="participantsContainer">
+
+                </div>
+                <div class="main__item" id="judgesContainer">
+
+                </div>
+            </div>
+            <div class="main__block main__block--add" id="btn_score">
+                <button class="main__btn" onclick="showResults()">
+                    Сформувати таблицю балів
+                </button>
+            </div>
+            <div class="main__block main__block--spec">
+                <div class="main__item main__item--mod" id="resultsContainer">
+                </div>
+            </div>
+            <div class="main__block main__block--add" id="btn_result">
+                <button class="main__btn" onclick="showVotingResult()">
+                    Результат голосування
+                </button>
+            </div>
+            <div class="main__block">
+                <div class="main__item" id="winnersList">
+                </div>
+            </div>
+            <div class="main__block main__block--spec">
+                <div class="main__item main__item--mod" id="winnersContainer">
+                </div>
+            </div>
+        </div>
+        <div class="footer" id="byTeam">
+            <p class="footer__item">
+                2023 by Team #3 (Alena Eremina, Artem Zarudniy, Eugene Yantowsky) - Design for Serg Nikiforov
+            </p>
+        </div>
+
+    </div>
+    <script src="main_v2_select.js"></script>
+</body>
+
+</html>
