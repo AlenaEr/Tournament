@@ -39,6 +39,11 @@ function createParticipantAndJudgesFields() {
     let participantsCount = document.getElementById('participants').value;
     let judgesCount = document.getElementById('judgesCount').value;
 
+    if (participantsCount <= 0 || judgesCount <= 0) {
+        alert('Кількість учасників та суддів повинна бути більше 0.');
+        return;
+    }
+
     createFields(participantsContainer, participantsCount, 'Учасник ', 'participant', participantsNames);
     createFields(judgesContainer, judgesCount, 'Суддя ', 'judge', judgesNames);
 
