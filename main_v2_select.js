@@ -44,7 +44,7 @@ function createParticipantAndJudgesFields() {
         alert('Кількість учасників та суддів повинна бути більше 0.');
         return;
     }
-    
+
     createFields(participantsContainer, participantsCount, 'Учасник ', 'participant', participantsNames);
     createFields(judgesContainer, judgesCount, 'Суддя ', 'judge', judgesNames);
 
@@ -134,7 +134,7 @@ function showResults() {
 
     let table = document.createElement('table');
     let headerRow = table.insertRow(0);
-    headerRow.insertCell(0).textContent = 'Учасник';
+    headerRow.insertCell(0).textContent = 'Учасник 🠿/ Суддя 🡂';
 
     for (let i = 1; i <= judgesCount; i++) {
         headerRow.insertCell(i).textContent = judgesNames[i - 1];
